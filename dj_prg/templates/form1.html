@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>form1_texts</title>
+</head>
+<body>
+
+    <!-- --- ВСТАВКА ФОРМЫ --- -->
+    <!-- В "action" вставляем маршрут по которому будет обрабатываться эта форма -->
+
+    <form method="post" action="form1_post">
+        <!-- ЗАЩИТА ФОРМЫ    --> {% csrf_token %}
+        <!-- ПОЛЯ ВВОДА      --> <table>{{ form }}</table>
+        <!-- КНОПКА ОТПРАВКИ --> <input type="submit" value="Отправить">
+    </form>
+
+</body>
+</html>
