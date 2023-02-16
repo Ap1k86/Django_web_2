@@ -4,7 +4,7 @@ from django.http import HttpResponse
 
 
 # FORM 1: Вторая страница (ДЕЙСТВИЯ: Принимает ДАННЫЕ из формы + Показать ДАННЫЕ на странице)
-def form1_post(request):
+def form_processing(request):
     print(request.POST)  # Вывод словаря (содержащий все отправленные данные формы)
 
     # request.POST - это QueryDict
@@ -41,7 +41,7 @@ def form1_get(request):
 
 
 # FORM 2: Главная страница
-def form2(request):
+def form2_get(request):
     my_form = UserForm()  # Создали объект формы
     context = {"form": my_form}
     return render(request, "form2.html", context=context)

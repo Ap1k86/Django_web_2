@@ -1,5 +1,6 @@
 from django import forms
 
+
 # --- [1] Основные ПАРАМЕТРЫ при создании ПОЛЕЙ ---
 # label - Название поля (пишется слева)
 # help_text - Подсказка поля (пишется снизу)
@@ -16,46 +17,31 @@ from django import forms
 # Создание формы №1
 class UserForm(forms.Form):
     # 1. Поле [str, int, bool]
-    name = forms.CharField(label="Имя", required=False, max_length=5, widget=forms.widgets.TextInput(attrs={'class': 'form-control'}))
-    age = forms.IntegerField(label="Возраст", required=False, max_value=99)
+    name = forms.CharField(label="Имя", required=False, max_length=5,
+                           widget=forms.widgets.TextInput(attrs={'class': 'form-control'}))
+    age = forms.IntegerField(label="Возраст", required=False, max_value=9999,
+                             widget=forms.widgets.NumberInput(attrs={'class': 'form-control'}))
     flag = forms.BooleanField(label="Флаг", initial=False, required=False)
-    comment = forms.CharField(label="Комментарий", required=False, widget=forms.Textarea())
+    comment = forms.CharField(label="Комментарий", required=False,
+                              widget=forms.Textarea(attrs={'class': 'form-control'}))
 
     # 2. Поле [Выбор ОДНОГО строкового элемента из списка]
     choices = (("Английский", "Английский"), ("Немецкий", "Немецкий"), ("Данные", "Название"))
-    ling = forms.ChoiceField(label="Выберите язык", choices=choices)
+    ling = forms.ChoiceField(label="Выберите язык", choices=choices,
+                             widget=forms.Select(attrs={'class': 'form-control'}))
 
     # 3. Поле [Выбор МНОЖЕСТВА строковых элементов из списка]
     choices = (("Англия", "Англия"), ("Германия", "Германия"), ("Испания", "Испания"))
-    country = forms.MultipleChoiceField(label="Выберите страны", choices=choices)
+    country = forms.MultipleChoiceField(label="Выберите страны", choices=choices,
+                                        widget=forms.SelectMultiple(attrs={'class': 'form-control'}))
 
     # 4. Поле [Выбор файла (ИМЯ) из ОС]
-    file1 = forms.FileField(label="Файл", required=False)
+    file1 = forms.FileField(label="Файл", required=False, widget=forms.FileInput(attrs={'class': 'form-control'}))
 
     # 5. Поле [Выбор файла (ПУТЬ) из ОС]
-    file2 = forms.FilePathField(label="Файл", required=False, path=r"C:\Users\st\PycharmProjects\django_web_2\dj_prg", recursive=True, match=".py", allow_folders=True)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    file2 = forms.FilePathField(label="Файл", required=False, path=r"C:\Users\st\PycharmProjects\django_web_2\dj_prg",
+                                recursive=True, match=".py", allow_folders=True,
+                                widget=forms.FileInput(attrs={'class': 'form-control'}))
 
 # --- 2-ой способ применения CSS (через виджеты) ---
 # У поля можно указать Виджет (widget) на основе которого и будет создано HTML разметка поля.
