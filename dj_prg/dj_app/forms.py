@@ -17,11 +17,12 @@ from django import forms
 # Создание формы №1
 class UserForm(forms.Form):
     # 1. Поле [str, int, bool]
-    name = forms.CharField(label="Имя", required=False, max_length=5,
+    name = forms.CharField(label="Имя", required=False, max_length=15,
                            widget=forms.widgets.TextInput(attrs={'class': 'form-control'}))
-    age = forms.IntegerField(label="Возраст", required=False, max_value=9999,
+    age = forms.IntegerField(label="Возраст", required=False, max_value=99,
                              widget=forms.widgets.NumberInput(attrs={'class': 'form-control'}))
-    flag = forms.BooleanField(label="Флаг", initial=False, required=False)
+    flag = forms.BooleanField(label="Флаг", initial=False, required=False,
+                              widget=forms.widgets.CheckboxInput(attrs={'class': 'form-check-input'}))
     comment = forms.CharField(label="Комментарий", required=False,
                               widget=forms.Textarea(attrs={'class': 'form-control'}))
 
@@ -41,7 +42,7 @@ class UserForm(forms.Form):
     # 5. Поле [Выбор файла (ПУТЬ) из ОС]
     file2 = forms.FilePathField(label="Файл", required=False, path=r"C:\Users\st\PycharmProjects\django_web_2\dj_prg",
                                 recursive=True, match=".py", allow_folders=True,
-                                widget=forms.FileInput(attrs={'class': 'form-control'}))
+                                widget=forms.ClearableFileInput(attrs={'class': 'form-control'}))
 
 # --- 2-ой способ применения CSS (через виджеты) ---
 # У поля можно указать Виджет (widget) на основе которого и будет создано HTML разметка поля.

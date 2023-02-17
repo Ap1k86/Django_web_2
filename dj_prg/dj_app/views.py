@@ -3,7 +3,22 @@ from dj_app.forms import *  # Импортируем все ФОРМЫ
 from django.http import HttpResponse
 
 
-# FORM 1: Вторая страница (ДЕЙСТВИЯ: Принимает ДАННЫЕ из формы + Показать ДАННЫЕ на странице)
+# FORM 1: Первая форма (ДЕЙСТВИЯ: Показать ФОРМУ на странице)
+def form1_get(request):
+    my_form = UserForm()  # Создали объект формы
+    context = {"form": my_form}
+    return render(request, "form1.html", context=context)
+
+
+# FORM 2: Вторая форма (ДЕЙСТВИЯ: Показать ФОРМУ на странице)
+def form2_get(request):
+    my_form = UserForm()  # Создали объект формы
+    context = {"form": my_form}
+    return render(request, "form2.html", context=context)
+
+
+# ОБРАБОТКА 1/2 форм (ДЕЙСТВИЯ: Принимает ДАННЫЕ из формы + показать ДАННЫЕ на странице)
+
 def form_processing(request):
     print(request.POST)  # Вывод словаря (содержащий все отправленные данные формы)
 
@@ -31,20 +46,3 @@ def form_processing(request):
                 text += "<b>{}:</b> {}<br>".format(key[0].upper() + key[1:], value)
     text += "<b>{}:</b> {}<br>".format("Flag", flag)  # Исключение. Добавление отдельно Флага в финальный "text"
     return HttpResponse(text)
-
-
-# FORM 1: Первая страница (ДЕЙСТВИЯ: Показать ФОРМУ на странице)
-def form1_get(request):
-    my_form = UserForm()  # Создали объект формы
-    context = {"form": my_form}
-    return render(request, "form1.html", context=context)
-
-
-# FORM 2: Главная страница
-def form2_get(request):
-    my_form = UserForm()  # Создали объект формы
-    context = {"form": my_form}
-    return render(request, "form2.html", context=context)
-
-
-
