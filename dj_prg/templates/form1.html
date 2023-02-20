@@ -1,13 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Форма 1</title>
-</head>
-<body>
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}Форма 1{% endblock title %}
+
+{% block form %}
 
     <!-- --- ВСТАВКА ФОРМЫ --- -->
     <!-- В "action" вставляем маршрут по которому будет обрабатываться эта форма -->
@@ -18,5 +15,4 @@
         <!-- КНОПКА ОТПРАВКИ --> <input type="submit" value="Отправить">
     </form>
 
-</body>
-</html>
+{% endblock form %}
