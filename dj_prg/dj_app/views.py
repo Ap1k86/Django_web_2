@@ -1,6 +1,13 @@
+import json
+
 from django.shortcuts import render
 from dj_app.forms import *  # Импортируем все ФОРМЫ
 from django.http import HttpResponse
+
+
+# Метод главной страницы.
+def index(request):
+    return render(request, 'index.html')
 
 
 # FORM 1: Первая форма (ДЕЙСТВИЯ: Показать ФОРМУ на странице)
@@ -15,6 +22,24 @@ def form2_get(request):
     my_form = UserForm()  # Создали объект формы
     context = {"form": my_form}
     return render(request, "form2.html", context=context)
+
+
+def form3_get_post(request):
+    if request.method == "GET":
+        my_form = FloatingForm()
+        return render(request, 'form3.html', {'form': my_form})
+    if request.method == "POST":
+        request.POST.get("email")
+        request.POST.get("password")
+
+        dct = {}
+
+        for key, value in request.POST.items():
+            if not key == "csrfmiddlewaretoken":
+                dct = {key: value}
+
+                with open("dj_prg/data.json", mode="a+") as f:
+                    json.dump(dct, f)
 
 
 # ОБРАБОТКА 1/2 форм (ДЕЙСТВИЯ: Принимает ДАННЫЕ из формы + показать ДАННЫЕ на странице)
@@ -42,7 +67,7 @@ def form_processing(request):
                     # text += "<br>"  # Добавляем - Переход на новую строку
                     # 2 способ (лучше)
                     country = ", ".join(request.POST.getlist("country"))  # строка со странами
-                    text += "<b>{}:</b> {}<br>".format(key[0].upper() + key[1:], country)  # Добавляем - Country:
+                    text += f"<b>{key}:</b> {country}<br>"  # Добавляем - Country:
                 else:
                     text += "<b>{}:</b> {}<br>".format(key[0].upper() + key[1:], value)
     text += "<b>{}:</b> {}<br>".format("Flag", flag)  # Исключение. Добавление отдельно Флага в финальный "text"

@@ -44,6 +44,17 @@ class UserForm(forms.Form):
                                 recursive=True, match=".py", allow_folders=True,
                                 widget=forms.ClearableFileInput(attrs={'class': 'form-control'}))
 
+
+class FloatingForm(forms.Form):
+    email = forms.EmailField(label="Email", required=True, help_text="Введите Email",
+                             widget=forms.widgets.EmailInput(
+                                 attrs={'type': "email", 'class': 'form-control', 'id': 'floatingInput',
+                                        'placeholder': 'name@example.com'}))
+    password = forms.CharField(label="Введите пароль", required=False, help_text="Введите пароль",
+                               widget=forms.widgets.PasswordInput(
+                                   attrs={'type': 'password', 'class': 'form-control', 'id': "floatingPassword",
+                                          'placeholder': 'Пароль'}))
+
 # --- 2-ой способ применения CSS (через виджеты) ---
 # У поля можно указать Виджет (widget) на основе которого и будет создано HTML разметка поля.
 # А к виджету "Textarea" можно прикрепить класс "mybold". Пример: Textarea(attrs={"class": "mybold"})
