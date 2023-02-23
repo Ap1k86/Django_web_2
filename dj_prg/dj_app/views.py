@@ -1,5 +1,9 @@
 import json
 
+# Класс по работе с файлами json.
+from class_files import File
+from json.decoder import JSONDecodeError
+
 from django.shortcuts import render
 from dj_app.forms import *  # Импортируем все ФОРМЫ
 from django.http import HttpResponse
@@ -29,17 +33,20 @@ def form3_get_post(request):
         my_form = FloatingForm()
         return render(request, 'form3.html', {'form': my_form})
     if request.method == "POST":
-        request.POST.get("email")
-        request.POST.get("password")
+        email = request.POST.get("email")
+        password = request.POST.get("password")
 
-        dct = {}
+        print(f"{email=}, \n{password=}")
 
-        for key, value in request.POST.items():
-            if not key == "csrfmiddlewaretoken":
-                dct = {key: value}
+        data = {"email": email, "password": password}
 
-                with open("dj_prg/data.json", mode="a+") as f:
-                    json.dump(dct, f)
+        File.write_json(data=data, path="db.json", overwriting=False)
+
+    x = File.read_json(path="db.json")
+    print(x)
+
+    context = {"x": x}
+    return render(request, 'form3.html', context=context)
 
 
 # ОБРАБОТКА 1/2 форм (ДЕЙСТВИЯ: Принимает ДАННЫЕ из формы + показать ДАННЫЕ на странице)
