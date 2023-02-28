@@ -36,14 +36,11 @@ def form3_get_post(request):
         email = request.POST.get("email")
         password = request.POST.get("password")
 
-        print(f"{email=}, \n{password=}")
-
         data = {"email": email, "password": password}
 
         File.write_json(data=data, path="db.json", overwriting=False)
 
     x = File.read_json(path="db.json")
-    print(x)
 
     context = {"x": x}
     return render(request, 'form3.html', context=context)
