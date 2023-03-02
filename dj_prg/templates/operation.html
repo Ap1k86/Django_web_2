@@ -2,34 +2,45 @@
 
 {% load static %}
 
-{% block title %} {% endblock %}
+{% block title %}Операции с Базой данных.{% endblock %}
 
 {% block form %}
 
 <div class="container">
-<div class="row">
-    <div class="col gy-5"></div>
-    <div class="col-4 text-center">
-        <table class="table">
-            <thead>
-            <tr>
-                <th scope="col">Имя</th>
-                <th scope="col">Возраст</th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for i in x %}
-            <tr>
-                <td>{{ i.name }}</td>
-                <td>{{ i.age }}</td>
-            </tr>
-            {% endfor %}
+    <div class="row">
+        <div class="col gy-5">
+            <form action="" method="POST">
+                {% csrf_token %}
+                <table>{{ form }}</table>
+                <input type="submit" value="Сохранить">
+            </form>
+            {% if request.method == "POST" %}
+                <p>Пользователь: <b><i>{{ name }}</i></b> добавлен в базу данных!</p>
+            {% endif %}
+        </div>
 
-            </tbody>
-        </table>
+        <div class="col-6 text-center">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">Имя</th>
+                    <th scope="col">Возраст</th>
+                    <th scope="col">Изменить?</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for elem in data %}
+                <tr>
+                    <td>{{ elem.name }}</td>
+                    <td>{{ elem.age }}</td>
+                    <td><a href="delete/{{ elem.id }}" name="delete">Удалить?</a> / <a href="create/{{ elem.id }}">Изменить?</a></td>
+                </tr>
+                {% endfor %}
+
+                </tbody>
+            </table>
+        </div>
     </div>
-    <div class="col"></div>
-</div>
 </div>
 
 {% endblock %}

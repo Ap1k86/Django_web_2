@@ -1,12 +1,12 @@
 import json
-
 # Класс по работе с файлами json.
 from class_files import File
 from json.decoder import JSONDecodeError
 
 from django.shortcuts import render
-from dj_app.forms import *  # Импортируем все ФОРМЫ
-from django.http import HttpResponse
+# from dj_app.forms import *  # Импортируем все ФОРМЫ
+from django.http import *
+from .forms import *
 from .models import *
 
 
@@ -20,31 +20,66 @@ class Models:
     @staticmethod
     def operation(request):
         if request.method == "GET":
-            x = DataBase.read(mode=1)
-            context = {"x": x}
-            return render(request, 'operation.html', context=context)
+            form = OperationForm()
+
+            data = DataBase.read(mode="filter")
+            return render(request, 'operation.html', {"data": data, "form": form})
+
         if request.method == "POST":
-            pass
+            form = OperationForm()
+
+            name = request.POST.get("name")
+            age = request.POST.get("age")
+
+            if len(name) and len(age):
+                kwargs = {"name": name, "age": age}
+                DataBase.write(**kwargs)
+
+            data = DataBase.read("all")
+            return render(request, 'operation.html', {"data": data, "form": form, "name": name})
 
 
+# Удаление данных из базы данных.
 # Класс содержащий ВНУТРЕННЮЮ работу с бд.
 class DataBase:
 
     @staticmethod
-    def read(mode=6):
+    def read(mode="all"):
         result = None
-        if mode == 1:
-            result = Person.objects.all()
-        return result
 
-    def write(self):
+        if mode == "all":
+            return Person.objects.all()
+
+        if mode == "filter":
+            return Person.objects.filter(age=99)
+
+        if mode == "exclude":
+            return Person.objects.filter(exclude=16)
+
+        if mode == "get":
+            return Person.objects.get(id=id)
+
+    @staticmethod
+    def write(**kwargs):
+        Person(**kwargs).save()
+
+    @staticmethod
+    def update():
         pass
 
-    def update(self):
+    @staticmethod
+    def delete():
         pass
 
-    def delete(self):
-        pass
+    # Создание нового юзера.
+    @staticmethod
+    def create_used(login, password, email):
+        try:
+            from django.contrib.auth.models import User
+            from django.db.utils import IntegrityError
+            User.objects.create_user(login, password, email)
+        except IntegrityError:
+            pass
 
 
 # Класс работы с формой.

@@ -55,6 +55,14 @@ class FloatingForm(forms.Form):
                                    attrs={'type': 'password', 'class': 'form-control', 'id': "floatingPassword",
                                           'placeholder': 'Пароль'}))
 
+
+# Создание формы 3 для операций с бд.
+class OperationForm(forms.Form):
+    name = forms.CharField(label="Введите имя", required=False, max_length=15,
+                           widget=forms.widgets.TextInput(attrs={'class': 'form-control'}))
+    age = forms.IntegerField(label="Введите возраст", required=False, max_value=120,
+                             widget=forms.widgets.NumberInput(attrs={'class': 'form-control'}))
+
 # --- 2-ой способ применения CSS (через виджеты) ---
 # У поля можно указать Виджет (widget) на основе которого и будет создано HTML разметка поля.
 # А к виджету "Textarea" можно прикрепить класс "mybold". Пример: Textarea(attrs={"class": "mybold"})
