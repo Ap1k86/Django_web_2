@@ -2,11 +2,12 @@
 
 {% load static %}
 
-{% block title %}Form 3{% endblock title%}\
+{% block title %}Form 3{% endblock title%}
 
 {% block form %}
 
 {% if request.method == "GET" %}
+
 <div class="container" style="padding: 25px;">
     <div class="row">
         <div class="col gy-5"></div>
@@ -29,7 +30,9 @@
         <div class="col"></div>
     </div>
 </div>
+
 {% else %}
+
 <div class="container">
     <div class="row">
         <div class="col-3"></div>

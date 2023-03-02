@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %} {% endblock %}
+
+{% block form %}
+
+<div class="container">
+<div class="row">
+    <div class="col gy-5"></div>
+    <div class="col-4 text-center">
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">Имя</th>
+                <th scope="col">Возраст</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for i in x %}
+            <tr>
+                <td>{{ i.name }}</td>
+                <td>{{ i.age }}</td>
+            </tr>
+            {% endfor %}
+
+            </tbody>
+        </table>
+    </div>
+    <div class="col"></div>
+</div>
+</div>
+
+{% endblock %}

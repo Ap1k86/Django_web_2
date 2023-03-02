@@ -1,6 +1,8 @@
 from django.db import models
 
-# Create your models here.
-# class Form3(models.Model):
-#     email =
-#     password =
+
+# Класс человек.
+class Person(models.Model):
+    name = models.CharField(max_length=15)
+    age = models.IntegerField()
+    objects = models.Model
