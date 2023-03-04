@@ -22,7 +22,7 @@ class Models:
         if request.method == "GET":
             form = OperationForm()
 
-            data = DataBase.read(mode="filter")
+            data = DataBase.read(Person, mode="filter")
             return render(request, 'operation.html', {"data": data, "form": form})
 
         if request.method == "POST":
@@ -33,9 +33,9 @@ class Models:
 
             if len(name) and len(age):
                 kwargs = {"name": name, "age": age}
-                DataBase.write(**kwargs)
+                DataBase.write(Person, **kwargs)
 
-            data = DataBase.read("all")
+            data = DataBase.read(Person, "all")
             return render(request, 'operation.html', {"data": data, "form": form, "name": name})
 
 
@@ -44,24 +44,23 @@ class Models:
 class DataBase:
 
     @staticmethod
-    def read(mode="all"):
-        result = None
+    def read(model, mode="all"):
 
         if mode == "all":
-            return Person.objects.all()
+            return model.objects.all()
 
         if mode == "filter":
-            return Person.objects.filter(age=99)
+            return model.objects.filter(age=99)
 
         if mode == "exclude":
-            return Person.objects.filter(exclude=16)
+            return model.objects.filter(exclude=16)
 
         if mode == "get":
-            return Person.objects.get(id=id)
+            return model.objects.get(id=id)
 
     @staticmethod
-    def write(**kwargs):
-        Person(**kwargs).save()
+    def write(model, **kwargs):
+        model(**kwargs).save()
 
     @staticmethod
     def update():
