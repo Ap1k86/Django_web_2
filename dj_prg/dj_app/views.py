@@ -1,13 +1,13 @@
-import json
 # Класс по работе с файлами json.
 from class_files import File
 from json.decoder import JSONDecodeError
 
 from django.shortcuts import render
-# from dj_app.forms import *  # Импортируем все ФОРМЫ
 from django.http import *
-from .forms import *
+from .forms import *  # Импортируем все ФОРМЫ
 from .models import *
+from django.contrib.auth.models import User
+from django.db.utils import IntegrityError
 
 
 # Метод главной страницы.
@@ -21,13 +21,14 @@ class Models:
     def operation(request):
         if request.method == "GET":
             form = OperationForm()
-
             data = DataBase.read(Person, mode="filter")
-            return render(request, 'operation.html', {"data": data, "form": form})
+            context = {
+                "data": data, "form": form
+            }
+            return render(request, 'operation.html', context=context)
 
         if request.method == "POST":
             form = OperationForm()
-
             name = request.POST.get("name")
             age = request.POST.get("age")
 
@@ -36,49 +37,81 @@ class Models:
                 DataBase.write(Person, **kwargs)
 
             data = DataBase.read(Person, "all")
-            return render(request, 'operation.html', {"data": data, "form": form, "name": name})
+            context = {
+                "data": data, "form": form, "name": name
+            }
+            return render(request, 'operation.html', context=context)
+
+    #
+    @staticmethod
+    def edit(request, user_id):
+        kwargs = {'name': '-', 'age': '10'}
+        DataBase.update(model=Person, elem_id=user_id, **kwargs)
+        # return HttpResponseRedirect("/operation")
+        form = OperationForm()
+        data = DataBase.read(Person, mode="filter")
+        context = {
+            "data": data, "form": form
+        }
+        return render(request, 'operation.html', context=context)
+
+    #
+    @staticmethod
+    def delete(request, user_id):
+        kwargs = {'id': user_id}
+        DataBase.delete(model=Person, **kwargs)
+        return HttpResponseRedirect("/operation")
+
+    #
+    @staticmethod
+    def create_user(request):
+        DataBase.create_used('moderator', '12345', 'moderatoe@ixxa.com')
+        return HttpResponseRedirect("/operation")
 
 
 # Удаление данных из базы данных.
 # Класс содержащий ВНУТРЕННЮЮ работу с бд.
 class DataBase:
-
     @staticmethod
-    def read(model, mode="all"):
+    def read(model, mode="all", **kwargs):
 
         if mode == "all":
-            return model.objects.all()
+            result = model.objects.all()
+            return result
 
         if mode == "filter":
-            return model.objects.filter(age=99)
+            result = model.objects.filter(**kwargs)
+            return result
 
         if mode == "exclude":
-            return model.objects.filter(exclude=16)
+            result = model.objects.filter(**kwargs)
+            return result
 
         if mode == "get":
-            return model.objects.get(id=id)
+            result = model.objects.get(**kwargs)
+            return [result]
 
     @staticmethod
     def write(model, **kwargs):
         model(**kwargs).save()
 
+    # Обновление объекта с 'elem_id' в таблице 'model', а именно перезаписи его полей на те, которые в **kwargs.
     @staticmethod
-    def update():
-        pass
+    def update(model, elem_id, **kwargs):
+        model.objects.filter(id=elem_id).update(**kwargs)
 
+    # Удаление из таблицы 'model' записи, удовлетворяющей фильтру переданному в {} через '**kwargs'.
     @staticmethod
-    def delete():
-        pass
+    def delete(model, **kwargs):
+        model.objects.filter(**kwargs).delete()
 
     # Создание нового юзера.
     @staticmethod
     def create_used(login, password, email):
         try:
-            from django.contrib.auth.models import User
-            from django.db.utils import IntegrityError
             User.objects.create_user(login, password, email)
         except IntegrityError:
-            pass
+            return None
 
 
 # Класс работы с формой.

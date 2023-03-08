@@ -20,8 +20,11 @@ urlpatterns = [
     # Маршрут №4
     path('operation', views.Models.operation, name="operation"),
 
-    # Маршрут №3: (ДЕЙСТВИЯ : Принимает ДАННЫЕ из формы 1/2 + Показать ДАННЫЕ на странице)
+    # Маршрут №5: (ДЕЙСТВИЯ: Принимает ДАННЫЕ из формы 1/2 + Показать ДАННЫЕ на странице)
     path('form_processing', views.Forms.processing, name="form_processing"),
 
-    path('delete/<int:id>/', views.Models.operation, name="Удаление зарегистрированного пользователя")
+    # Маршрут №6 Действия: (Работа с бд)
+    path('edit/<int:user_id>', views.Models.edit, name='edit'),
+    path('delete/<int:user_id>/', views.Models.delete, name='delete'),
+    path('create', views.Models.create_user, name='create_user')
 ]
