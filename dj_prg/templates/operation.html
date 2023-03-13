@@ -8,47 +8,56 @@
 
 <div class="container">
     <div class="row">
-        <div class="col gy-5">
-            <form action="" method="POST">
-                {% csrf_token %} <!-- Защита формы -->
-                <table>{{ form }}</table> <!-- Поля ввода -->
-                <input class="btn btn-light" type="submit" value="Сохранить"> <!-- Кнопка ввода -->
-                <a class="btn btn-light" href="/create">Создать пользователя</a> <!-- -->
-            </form>
-            {% if request.method == "POST" %}
-            {% if name %}
-            <p>Пользователь: <b><i>{{ name }}</i></b> добавлен в базу данных!</p>
-            {% else %}
-            <p>Вы не можете создать пользователя, не заполнив поля в таблице!!!</p>
-            {% endif %}
-            {% endif %}
-        </div>
-
-        <div class="col-6 text-center">
-            <table class="table">
-                <thead>
-                <tr>
-                    <th scope="col">ID</th>
-                    <th scope="col">Имя</th>
-                    <th scope="col">Возраст</th>
-                    <th scope="col">Изменить?</th>
-                </tr>
-                </thead>
-                <tbody>
-                {% for elem in data %}
-                <tr>
-                    <td>{{ elem.id }}</td>
-                    <td>{{ elem.name }}</td>
-                    <td>{{ elem.age }}</td>
-                    <td><a class="btn btn-danger" href="delete/{{ elem.id }}" name="delete">Удалить?</a> | <a
-                            class="btn btn-success" href="edit/{{ elem.id }}">Изменить?</a></td>
-                </tr>
-                {% endfor %}
-
-                </tbody>
-            </table>
-        </div>
+        <!-- Вставка Формы -->
+        <h2 class="text-center">Сохранения в БД полей формы</h2>
+        <form method="post" action="">
+            {% csrf_token %} <!-- ЗАЩИТА ФОРМЫ    -->
+            <!-- ПОЛЯ ВВОДА      -->
+            <table>{{ form }}</table>
+            <input class="btn btn-primary" type="submit" value="Сохранить"> <!-- КНОПКА ОТПРАВКИ -->
+            <a class="btn btn-secondary" href="{% url 'create' %}">Создать пользователя</a> <!-- КНОПКА не имеющее общее с формой -->
+        </form>
     </div>
 </div>
+<div class="row">
+    <div class="col"></div>
+    <div class="col-8">
+        <!-- Вставка Таблицы -->
+        <h2 class="mt-5 text-center">Чтение из БД</h2>
+        <table class="table">
+            <tr>
+                <th class="col">ID</th>
+                <th class="col-5" style="text-align: left;">Имя</th>
+                <th class="col-3">Возраст</th>
+                <th class="col-3" style="text-align: center;">Действие</th>
+            </tr>
+            {% for elm in data %}
+            {% if elm.id != user_id %}
+            <!-- Строка (обычная) -->
+            <tr>
+                <td>{{ elm.id }}</td>
+                <td>{{ elm.name }}</td>
+                <td>{{ elm.age }}</td>
+                <td style="text-align: right;"><a class="btn btn-outline-warning btn-sm" href="/edit/{{ elm.id }}">Изменить</a> | <a
+                        class="btn btn-outline-danger btn-sm" href="/delete/{{ elm.id }}">Удалить</a></td>
+            </tr>
+            {% else %}
+            <!-- Строка (для изменений) -->
+            <tr>
+                <form method="post" action="/edit/{{ elm.id }}">
+                    {% csrf_token %}
+                    <td>{{ elm.id }}</td>
+                    <td>{{ form.name }}</td>
+                    <td>{{ form.age }}</td>
+                    <td><input class="btn btn-primary btn-sm" type="submit" value="Сохранить"> | <a
+                            class="btn btn-outline-warning btn-sm" href="/operation">Отменить</a></td>
+                </form>
+                {% endif %}
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+    <div class="col"></div>
+</div>
 
-{% endblock %}
+{% endblock form %}
