@@ -15,8 +15,10 @@
             <!-- ПОЛЯ ВВОДА      -->
             <table>{{ form }}</table>
             <input class="btn btn-primary" type="submit" value="Сохранить"> <!-- КНОПКА ОТПРАВКИ -->
-            <a class="btn btn-secondary" href="{% url 'create' %}">Создать пользователя</a> <!-- КНОПКА не имеющее общее с формой -->
+            <a class="btn btn-secondary" href="{% url 'create' %}">Создать пользователя</a>
+            <!-- КНОПКА не имеющее общее с формой -->
         </form>
+        <h3>{{ lol }} <b>{{ error }}</b></h3>
     </div>
 </div>
 <div class="row">
@@ -38,8 +40,9 @@
                 <td>{{ elm.id }}</td>
                 <td>{{ elm.name }}</td>
                 <td>{{ elm.age }}</td>
-                <td style="text-align: right;"><a class="btn btn-outline-warning btn-sm" href="/edit/{{ elm.id }}">Изменить</a> | <a
-                        class="btn btn-outline-danger btn-sm" href="/delete/{{ elm.id }}">Удалить</a></td>
+                <td style="text-align: right;"><a class="btn btn-outline-warning btn-sm" href="/edit/{{ elm.id }}">Изменить</a>
+                    | <a
+                            class="btn btn-outline-danger btn-sm" href="/delete/{{ elm.id }}">Удалить</a></td>
             </tr>
             {% else %}
             <!-- Строка (для изменений) -->

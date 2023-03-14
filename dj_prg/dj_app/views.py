@@ -51,7 +51,7 @@ class Forms:
             context = {"table": table}
             return render(request, "form3.html", context=context)
 
-    # ОБРАБОТКА 1/2 форм (ДЕЙСТВИЯ: Принимает ДАННЫЕ из формы + Показать ДАННЫЕ на странице)
+    # ОБРАБОТКА 1/2 форм (ДЕЙСТВИЯ: Принимает ДАННЫЕ из формы + показать ДАННЫЕ на странице)
     @staticmethod
     def processing(request):
         print(request.POST)  # Вывод словаря (содержащий все отправленные данные формы)
@@ -96,19 +96,21 @@ class Models:
         if request.method == "POST":
             name = request.POST.get("name")  # Получили из формы Имя
             age = request.POST.get("age")  # Получили из формы Возраст
-            if len(age):
-                # Сохраняем только если поля не пустые
-                if len(name) and len(age):
-                    kwargs = {"name": name, "age": age}  # Передаваемые аргументы
-                    DataBase.write(model=Person, **kwargs)  # Пишет в БД
-                else:
-                    raise "Не ввели возраст!!"
+            # Сохраняем только если поля не пустые
+            if len(name) and len(age):
+                kwargs = {"name": name, "age": age}  # Передаваемые аргументы
+                DataBase.write(model=Person, **kwargs)  # Пишет в БД
                 form = OperationForm()  # Создаю форму
                 data = DataBase.read(model=Person)  # Читаю таблицу
-                context = {"data": data, "form": form}
+                lol = f"Человек по имени: «{name}» добавлен в базу данных 😀"
+                context = {"data": data, "form": form, "lol": lol}
                 return render(request, "operation.html", context=context)
             else:
-                return render(request, "age_not_specified.html")
+                form = OperationForm()  # Создаю форму
+                data = DataBase.read(model=Person)  # Читаю таблицу
+                error = "Заполните форму! 😓"
+                context = {"data": data, "form": form, "error": error}
+                return render(request, "operation.html", context=context)
 
     # Метод маршрута /edit
     @staticmethod
