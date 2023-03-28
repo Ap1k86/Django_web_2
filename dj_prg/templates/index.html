@@ -4,6 +4,35 @@
 
 {% block title %}Главная страница{% endblock title %}
 
+{% block menu %}
+<h4>Формы Django </h4>
+<div>
+    <a class="nav-link active" aria-current="page" href="/form1">Форма 1</a>
+</div>
+<div>
+    <a class="nav-link" href="/form2">Форма 2</a>
+</div>
+<div>
+    <a class="nav-link" href="/form3">Форма 3</a>
+</div>
+
+<h4>Модели Django</h4>
+
+<div>
+    <a class="nav-link" href="/connection_foreign_key">Связь 1: Один ко многим</a>
+</div>
+<div>
+    <a class="nav-link" href="/connection_many_to_many">Связь 2: Многие ко многим.</a>
+</div>
+<div>
+    <a class="nav-link" href="/connection_one_to_one">Связь 3: Один к одному</a>
+</div>
+<div>
+    <a class="nav-link" href="/operation">Операции с BD. Обновление/Удаление/Чтение</a>
+</div>
+
+{% endblock menu %}
+
 {% block form %}
 
 {% endblock form %}

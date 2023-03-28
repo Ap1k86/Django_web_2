@@ -22,4 +22,8 @@ urlpatterns = [
     path('edit/<int:user_id>', views.Models.edit, name="edit"),
     path('delete/<int:user_id>', views.Models.delete, name="delete"),
     path('create_user', views.Models.create_user, name="create"),
+
+    path('connection_foreign_key', views.Models.connection_foreign_key, name="connection_foreign_key"),
+    path('connection_many_to_many', views.Models.connection_many_to_many, name="connection_many_to_many"),
+    path('connection_one_to_one', views.Models.connection_one_to_one, name="connection_one_to_one"),
 ]

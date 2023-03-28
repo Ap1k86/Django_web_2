@@ -147,6 +147,38 @@ class Models:
         print("Пользователь создан!")
         return HttpResponseRedirect("/operation")
 
+    # Связь один ко многим.
+    @staticmethod
+    def connection_foreign_key(request):
+        # 1. [Создание] Добавление продукта, обращаясь к продуктам.
+        # DataBase.write(model=Company, **{'name': 'xiaomi'})
+        # 2. [Создание] Добавление компании, обращаясь к компании.
+        # DataBase.write(model=Product, **{'name': 'Xiaomi Note 5', 'price': '5999', 'company_id': '6'})
+        # 3. [Создание] Добавление продукта, обращаясь к компании.
+        # product = Product(name='Samsung Galaxy S2', price='2045')
+        # Company.objects.get(name='samsung').product_set.add(product, bulk=False)
+        # 1. Чтение продукта через компанию.
+        products = Company.objects.get(name='apple').product_set.all()
+        result = ''
+        for product in products:
+            result += str(product.name) + ', '
+        result += "<br>"
+        # 2. Чтение продукта через продукты.
+        products = Product.objects.filter(company_id=4)
+        for product in products:
+            result += str(product.name) + ', '
+        return HttpResponse(f"{result}")
+
+    # Связь многие ко многим.
+    @staticmethod
+    def connection_many_to_many(request):
+        return HttpResponse("sdfd")
+
+    # Связь один к одному.
+    @staticmethod
+    def connection_one_to_one(request):
+        return HttpResponse("sdfd")
+
 
 # Класс содержащий ВНУТРЕННЮЮ работу с БД
 class DataBase:
